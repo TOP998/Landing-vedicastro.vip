@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish AI — Your Destiny, Written in Stars 🕉️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --void: #04050f;
+            --cosmos: #090b1c;
+            --nebula: #0f1128;
+            --gold: #e8a735;
+            --gold-pale: #f5cc7a;
+            --gold-dim: rgba(232, 167, 53, 0.15);
+            --saffron: #FF9933;
+            --saffron-glow: rgba(255, 153, 51, 0.45);
+            --ruby: #C41E3A;
+            --ruby-glow: rgba(196, 30, 58, 0.4);
+            --lotus: #E6B8D6;
+            --emerald: #00c896;
+            --silver: #c8cfe0;
+            --mist: rgba(200, 207, 224, 0.55);
+            --glass: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.08);
+            --blessing: radial-gradient(circle, rgba(255,153,51,0.15) 0%, transparent 70%);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: var(--void);
+            color: var(--silver);
+            overflow-x: hidden;
+            cursor: none;
+            background-image: 
+                radial-gradient(ellipse at 20% 80%, rgba(255,153,51,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(196,30,58,0.03) 0%, transparent 50%);
+        }
+        @media (hover: none) and (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor, .cursor-ring { display: none !important; }
+        }
+        .cursor {
+            position: fixed; width: 10px; height: 10px;
+            background: var(--saffron); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%,-50%);
+            transition: width 0.2s, height 0.2s;
+            mix-blend-mode: difference;
+            box-shadow: 0 0 10px var(--saffron-glow);
+        }
+        .cursor-ring {
+            position: fixed; width: 36px; height: 36px;
+            border: 1px solid var(--saffron); border-radius: 50%;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%,-50%);
+            transition: width 0.3s, height 0.3s;
+            box-shadow: 0 0 20px var(--saffron-glow);
+        }
+        #cosmos-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+        body::after {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 1; opacity: 0.6;
+        }
+        section { position: relative; z-index: 2; }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 20px 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(4,5,15,0.95), transparent);
+            backdrop-filter: blur(8px);
+        }
+        .nav-logo {
+            font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 4px;
+            color: var(--gold); text-decoration: none;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-logo::before { 
+            content: '🕉️'; 
+            font-size: 14px; 
+            animation: pulse-om 3s ease-in-out infinite; 
+            display: inline-block;
+            filter: drop-shadow(0 0 8px var(--saffron-glow));
+        }
+        @keyframes pulse-om { 
+            0%,100% { transform: scale(1); opacity: 1; } 
+            50% { transform: scale(1.1); opacity: 0.9; filter: drop-shadow(0 0 15px var(--saffron-glow)); } 
+        }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+            color: var(--mist); text-decoration: none; text-transform: uppercase; transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+            background: var(--saffron); transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--saffron); }
+        .nav-links a:hover::after { width: 100%; }
+        
+        .lang-toggle {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px;
+            color: var(--gold); background: rgba(255,153,51,0.12); 
+            border: 1px solid rgba(255,153,51,0.35);
+            padding: 6px 14px; cursor: none; border-radius: 6px; 
+            transition: all 0.3s; display: flex; align-items: center; gap: 4px;
+        }
+        .lang-toggle:hover { background: rgba(255,153,51,0.2); transform: translateY(-1px); }
+        .lang-toggle::before { content: '🌐'; font-size: 10px; }
+        
+        .nav-cta {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+            color: var(--void); background: linear-gradient(135deg, var(--saffron), var(--gold)); 
+            border: none; padding: 11px 26px; cursor: none; text-transform: uppercase; 
+            transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+            box-shadow: 0 4px 15px rgba(255,153,51,0.25);
+        }
+        .nav-cta:hover { 
+            background: linear-gradient(135deg, var(--gold), var(--gold-pale)); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(255,153,51,0.4);
+        }
+
+        /* HERO */
+        #hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 120px 40px 80px; position: relative; overflow: hidden;
+        }
+        .mandala {
+            position: absolute; width: min(700px, 90vw); height: min(700px, 90vw);
+            top: 50%; left: 50%; transform: translate(-50%,-50%);
+            opacity: 0.05; pointer-events: none;
+        }
+        .mandala circle, .mandala line, .mandala polygon { stroke: var(--gold); stroke-width: 0.5; fill: none; }
+        .mandala-outer { animation: spin-slow 60s linear infinite reverse; transform-origin: 50% 50%; }
+        .mandala-mid { animation: spin-slow 40s linear infinite; transform-origin: 50% 50%; }
+        .mandala-inner { animation: spin-slow 25s linear infinite reverse; transform-origin: 50% 50%; }
+        @keyframes spin-slow { from { transform: rotate(0deg) translate(-50%,-50%); } to { transform: rotate(360deg) translate(-50%,-50%); } }
+        
+        .mandala-om {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: clamp(28px, 5vw, 56px); 
+            filter: drop-shadow(0 0 20px rgba(255,153,51,0.5));
+            animation: breathe-om 5s ease-in-out infinite;
+            pointer-events: none; z-index: 3;
+        }
+        @keyframes breathe-om { 
+            0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.9; } 
+            50% { transform: translate(-50%,-50%) scale(1.08); opacity: 1; } 
+        }
+
+        .hero-badge {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px;
+            color: var(--saffron); border: 1px solid rgba(255,153,51,0.45); padding: 8px 24px;
+            display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px; 
+            text-transform: uppercase; animation: fadeSlide 1s ease both; 
+            background: rgba(255,153,51,0.1); border-radius: 30px;
+        }
+        .hero-badge::before { content: '🪷'; animation: float 3s ease-in-out infinite; display: inline-block; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        
+        .hero-title {
+            font-family: 'Cinzel', serif; font-size: clamp(52px, 9vw, 118px);
+            font-weight: 900; line-height: 0.9; letter-spacing: -1px; color: #fff;
+            animation: fadeSlide 1s ease 0.2s both; text-shadow: 0 0 30px rgba(255,153,51,0.15);
+        }
+        .hero-title .accent {
+            display: block;
+            background: linear-gradient(135deg, var(--saffron) 20%, var(--gold) 50%, var(--gold-pale) 80%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            background-size: 200% auto; animation: shimmer-text 3s linear infinite;
+        }
+        @keyframes shimmer-text { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        
+        .hero-sub {
+            font-size: clamp(17px, 2.2vw, 24px); font-style: italic; font-weight: 300;
+            color: var(--mist); max-width: 600px; margin: 32px auto 0; line-height: 1.65;
+            animation: fadeSlide 1s ease 0.4s both;
+        }
+        .hero-sub .highlight { color: var(--gold); font-weight: 500; }
+        
+        .hero-actions {
+            display: flex; gap: 20px; justify-content: center; margin-top: 52px;
+            flex-wrap: wrap; animation: fadeSlide 1s ease 0.6s both;
+        }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === PRO: RUBY CTA BUTTON === */
+        .btn-primary {
+            font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px;
+            color: #fff; 
+            background: var(--ruby);
+            border: 2px solid var(--gold);
+            padding: 18px 48px; cursor: none; text-transform: uppercase;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 12px;
+            clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+            transition: all 0.4s; position: relative; overflow: hidden;
+            animation: pulse-cta 2.5s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(196,30,58,0.4);
+        }
+        @keyframes pulse-cta { 
+            0%,100% { box-shadow: 0 0 0 0 var(--ruby-glow); } 
+            50% { box-shadow: 0 0 0 18px rgba(196,30,58,0); } 
+        }
+        .btn-primary::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 40px rgba(196,30,58,0.6); 
+            animation: none; 
+            background: linear-gradient(135deg, var(--ruby), #a01830);
+        }
+        .btn-primary::after {
+            content: '🙏'; font-size: 14px; margin-left: 4px; animation: wave 2s ease-in-out infinite;
+        }
+        @keyframes wave { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+
+        .btn-secondary {
+            font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px;
+            color: var(--gold); background: transparent; border: 1px solid rgba(255,153,51,0.45);
+            padding: 18px 48px; cursor: none; text-transform: uppercase; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 12px;
+            clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+            transition: all 0.4s;
+        }
+        .btn-secondary:hover { 
+            background: rgba(255,153,51,0.12); 
+            border-color: var(--gold); 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,153,51,0.15);
+        }
+
+        .scroll-hint {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            animation: fadeSlide 1s ease 1.2s both;
+        }
+        .scroll-hint span { 
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; 
+            color: var(--mist); text-transform: uppercase; 
+        }
+        .scroll-line { 
+            width: 1px; height: 60px; 
+            background: linear-gradient(to bottom, var(--saffron), transparent); 
+            animation: scrollPulse 2s ease-in-out infinite; 
+        }
+        @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* PANCHANG */
+        .panchang-strip {
+            background: linear-gradient(90deg, 
+                rgba(255,153,51,0.1) 0%, 
+                rgba(232,167,53,0.06) 50%, 
+                rgba(255,153,51,0.1) 100%); 
+            border-top: 1px solid rgba(255,153,51,0.35);
+            border-bottom: 1px solid rgba(255,153,51,0.35); 
+            padding: 15px 0; overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,153,51,0.12);
+            position: relative;
+        }
+        .panchang-strip::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,153,51,0.08), transparent);
+            animation: shine 3s ease-in-out infinite;
+        }
+        @keyframes shine { 0%,100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
+        
+        .panchang-ticker { display: flex; gap: 60px; animation: ticker 22s linear infinite; white-space: nowrap; }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .ticker-item {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+            color: var(--gold); display: flex; align-items: center; gap: 10px;
+            text-shadow: 0 0 10px rgba(232,167,53,0.6);
+            position: relative;
+        }
+        .ticker-item::after { content: '✦'; font-size: 8px; opacity: 0.5; color: var(--saffron); }
+        .ticker-item.highlight { 
+            color: var(--saffron); font-weight: 600; 
+            animation: glow-text 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 12px rgba(255,153,51,0.8);
+        }
+        @keyframes glow-text { 
+            from { text-shadow: 0 0 8px rgba(255,153,51,0.4); } 
+            to { text-shadow: 0 0 20px rgba(255,153,51,0.9); } 
+        }
+
+        /* STATS - PRO: LAKH FORMAT */
+        #stats {
+            padding: 100px 60px;
+            background: linear-gradient(135deg, rgba(255,153,51,0.05), rgba(196,30,58,0.03));
+            border-top: 1px solid rgba(255,153,51,0.2); 
+            border-bottom: 1px solid rgba(255,153,51,0.2);
+            position: relative;
+        }
+        #stats::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, var(--saffron), transparent);
+            opacity: 0.3;
+        }
+        .stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; text-align: center; }
+        .stat-num {
+            font-family: 'Cinzel', serif; font-size: clamp(36px, 5vw, 62px); font-weight: 900;
+            background: linear-gradient(135deg, var(--saffron), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 8px; line-height: 1;
+            text-shadow: 0 0 20px rgba(255,153,51,0.2);
+        }
+        .stat-label { font-size: 15px; font-style: italic; color: var(--mist); }
+        .stat-note { font-size: 11px; color: var(--gold); margin-top: 4px; font-family: 'Space Mono', monospace; }
+
+        /* SECTION COMMONS */
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-label { 
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 5px; 
+            color: var(--saffron); text-transform: uppercase; margin-bottom: 20px; display: block;
+            position: relative; display: inline-block; margin: 0 auto 20px;
+        }
+        .section-label::after {
+            content: '🪷'; position: absolute; right: -20px; top: -2px; font-size: 12px; animation: float 3s ease-in-out infinite;
+        }
+        .section-title { font-family: 'Cinzel', serif; font-size: clamp(30px, 5vw, 54px); font-weight: 600; color: #fff; line-height: 1.1; }
+        .section-title em { font-style: italic; color: var(--gold); }
+        .section-desc { font-size: 19px; font-style: italic; color: var(--mist); max-width: 540px; margin: 18px auto 0; line-height: 1.7; }
+        .section-divider { display: flex; align-items: center; gap: 20px; max-width: 600px; margin: 0 auto 80px; }
+        .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(255,153,51,0.45), transparent); }
+        .divider-icon { color: var(--gold); font-size: 14px; animation: pulse-soft 3s ease-in-out infinite; }
+        @keyframes pulse-soft { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        /* === PRO: ANCIENT + AI VISUAL BLOCK === */
+        .ancient-ai-block {
+            max-width: 900px; margin: 60px auto 0; padding: 40px;
+            background: linear-gradient(145deg, rgba(255,153,51,0.06), rgba(196,30,58,0.04));
+            border: 1px solid rgba(255,153,51,0.25); border-radius: 16px;
+            display: flex; align-items: center; gap: 30px; position: relative; overflow: hidden;
+        }
+        .ancient-ai-block::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255,153,51,0.08), transparent 50%);
+            pointer-events: none;
+        }
+        .ancient-scroll {
+            flex: 1; min-width: 200px; position: relative;
+        }
+        .scroll-paper {
+            background: linear-gradient(180deg, #f5e6d3, #e8d4b8);
+            border-radius: 8px; padding: 20px; position: relative;
+            box-shadow: inset 0 0 30px rgba(139,69,19,0.1);
+            font-family: 'Cinzel', serif; font-size: 11px; color: #5c4033;
+            line-height: 1.8; letter-spacing: 0.5px;
+        }
+        .scroll-paper::before {
+            content: 'ॐ'; position: absolute; top: 10px; right: 15px;
+            font-size: 24px; color: rgba(232,167,53,0.6);
+        }
+        .scroll-paper::after {
+            content: 'Parashara • Bhrigu • Jaimini';
+            display: block; margin-top: 12px; padding-top: 12px;
+            border-top: 1px dashed rgba(92,64,51,0.3);
+            font-family: 'Space Mono', monospace; font-size: 8px; color: #8b6f47;
+        }
+        .ai-scanner {
+            flex: 1; min-width: 200px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+        }
+        .scanner-beam {
+            width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 2px; animation: scan-move 2.5s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--gold);
+        }
+        @keyframes scan-move { 0%,100% { transform: translateX(-100%); opacity: 0.5; } 50% { transform: translateX(100%); opacity: 1; } }
+        .ai-chip {
+            background: linear-gradient(135deg, var(--nebula), var(--cosmos));
+            border: 1px solid var(--gold); border-radius: 10px; padding: 16px;
+            text-align: center; width: 100%;
+        }
+        .ai-chip-icon { font-size: 28px; margin-bottom: 8px; animation: pulse-soft 2s ease-in-out infinite; }
+        .ai-chip-text { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1px; }
+        .ancient-ai-label {
+            text-align: center; font-family: 'Space Mono', monospace; font-size: 10px;
+            color: var(--mist); margin-top: 16px; letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* === PRO: FAMILY FIRST BADGE === */
+        .family-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(196,30,58,0.12); border: 1px solid rgba(196,30,58,0.35);
+            padding: 10px 20px; border-radius: 30px; margin: 24px auto 0;
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px;
+            color: var(--silver); animation: float 4s ease-in-out infinite;
+        }
+        .family-badge::before { content: '👨‍👩‍👧‍👦'; font-size: 14px; }
+
+        /* FEATURES */
+        #features { padding: 120px 60px; max-width: 1400px; margin: 0 auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+        .feature-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 48px 38px; position: relative; overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4,0,0.2,1); cursor: none;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+            transform: translateX(-100%); transition: transform 0.6s;
+        }
+        .feature-card:hover::before { transform: translateX(0); }
+        .feature-card:hover { 
+            background: rgba(255,153,51,0.08); 
+            border-color: rgba(255,153,51,0.3); 
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        .feature-num { 
+            font-family: 'Cinzel', serif; font-size: 72px; font-weight: 900; 
+            color: rgba(255,153,51,0.07); line-height: 1; margin-bottom: 16px; letter-spacing: -4px; 
+        }
+        .feature-icon { font-size: 36px; margin-bottom: 18px; display: block; animation: float 4s ease-in-out infinite; }
+        .feature-title { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 12px; letter-spacing: 1px; }
+        .feature-desc { font-size: 16px; font-style: italic; color: var(--mist); line-height: 1.7; }
+        .feature-tag {
+            display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; 
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; 
+            color: var(--gold); text-transform: uppercase; padding: 4px 12px; 
+            border: 1px solid rgba(255,153,51,0.35); background: rgba(255,153,51,0.06); border-radius: 4px;
+        }
+        .feature-tag::before { content: '✨'; font-size: 10px; }
+
+        /* PREVIEW */
+        #preview { padding: 120px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1400px; margin: 0 auto; align-items: center; }
+        .preview-text .section-header { text-align: left; margin-bottom: 40px; }
+        .preview-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+        .preview-list li { display: flex; align-items: flex-start; gap: 16px; font-size: 18px; font-style: italic; color: var(--mist); line-height: 1.5; }
+        .preview-list li::before { content: '🪷'; color: var(--gold); font-size: 12px; margin-top: 5px; flex-shrink: 0; animation: float 3s ease-in-out infinite; }
+
+        .app-mockup { position: relative; display: flex; justify-content: center; }
+        .phone-frame {
+            width: 290px;
+            background: linear-gradient(145deg, #1a1f3a, #0a0e27);
+            border: 1px solid rgba(255,153,51,0.3); border-radius: 40px; padding: 18px;
+            box-shadow: 0 0 80px rgba(255,153,51,0.2), 0 0 0 1px rgba(255,255,255,0.04);
+            animation: float-phone 6s ease-in-out infinite;
+        }
+        @keyframes float-phone { 0%,100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-18px) rotate(1.5deg); } }
+        .phone-notch { width: 70px; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; margin: 0 auto 14px; }
+        .phone-screen { background: #04050f; border-radius: 26px; padding: 14px; min-height: 460px; }
+        .phone-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .phone-logo-text { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 2px; }
+        .phone-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); border-radius: 13px; padding: 13px; margin-bottom: 9px; }
+        .phone-card-title { font-size: 9px; color: rgba(255,153,51,0.9); margin-bottom: 6px; font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+        .phone-card-content { font-size: 12px; color: var(--silver); line-height: 1.5; }
+        .phone-score { display: flex; justify-content: space-between; gap: 6px; margin-top: 9px; }
+        .phone-score-item { flex: 1; background: rgba(255,153,51,0.15); border-radius: 8px; padding: 7px; text-align: center; }
+        .phone-score-val { font-size: 17px; font-weight: bold; color: var(--gold); font-family: 'Cinzel', serif; }
+        .phone-score-label { font-size: 7px; color: var(--mist); font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+        .phone-planet-row { display: flex; gap: 7px; margin-top: 7px; }
+        .phone-planet { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .phone-planet.active { background: linear-gradient(135deg, var(--saffron), var(--gold)); }
+        .phone-planet.dim { background: rgba(196,30,58,0.3); border: 1px solid rgba(196,30,58,0.5); }
+        .phone-nav { display: flex; justify-content: space-around; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .phone-nav span { font-size: 15px; opacity: 0.4; }
+        .phone-nav span.active-nav { opacity: 1; color: var(--gold); }
+
+        .float-badge { 
+            position: absolute; background: var(--nebula); 
+            border: 1px solid rgba(255,153,51,0.35); border-radius: 12px; 
+            padding: 11px 15px; animation: float-badge 5s ease-in-out infinite; 
+            box-shadow: 0 4px 20px rgba(255,153,51,0.2);
+        }
+        .float-badge:nth-child(2) { top: 8%; right: -55px; animation-delay: 1s; }
+        .float-badge:nth-child(3) { bottom: 20%; left: -65px; animation-delay: 2.5s; }
+        @keyframes float-badge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .badge-value { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--gold); }
+        .badge-label { font-size: 9px; color: var(--mist); font-family: 'Space Mono', monospace; letter-spacing: 1px; display: block; }
+
+        /* PRICING */
+        #pricing { padding: 120px 60px; max-width: 1200px; margin: 0 auto; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 60px; }
+        .price-card { 
+            background: var(--glass); border: 1px solid var(--glass-border); 
+            padding: 48px 34px; position: relative; transition: all 0.5s; cursor: none; 
+        }
+        .price-card.featured { 
+            background: linear-gradient(145deg, rgba(255,153,51,0.1), rgba(232,167,53,0.06)); 
+            border-color: rgba(255,153,51,0.45);
+            box-shadow: 0 0 40px rgba(255,153,51,0.15);
+        }
+        .price-card::after {
+            content: ''; position: absolute; inset: 0; border-radius: inherit;
+            background: radial-gradient(circle at 30% 20%, rgba(255,153,51,0.08), transparent 50%);
+            pointer-events: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .price-card:hover::after { opacity: 1; }
+        .price-card:hover { transform: translateY(-8px); border-color: rgba(255,153,51,0.45); }
+        .price-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--mist); text-transform: uppercase; margin-bottom: 22px; }
+        .price-amount { font-family: 'Cinzel', serif; font-size: 50px; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 8px; }
+        .price-amount span { font-size: 20px; color: var(--gold); }
+        .price-period { font-size: 13px; font-style: italic; color: var(--mist); margin-bottom: 32px; }
+        .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+        .price-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; font-style: italic; color: var(--silver); }
+        .price-features li::before { content: '🪷'; color: var(--gold); font-size: 10px; margin-top: 4px; flex-shrink: 0; }
+        .price-features li.locked { opacity: 0.35; }
+        .price-features li.locked::before { content: '🔒'; font-size: 10px; color: var(--ruby); }
+        .price-btn { display: block; width: 100%; text-align: center; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 15px; cursor: none; text-decoration: none; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+        .price-btn-outline { color: var(--gold); border: 1px solid rgba(255,153,51,0.45); }
+        .price-btn-outline:hover { background: rgba(255,153,51,0.12); }
+        .price-btn-fill { background: linear-gradient(135deg, var(--saffron), var(--gold)); color: var(--void); }
+        .price-btn-fill:hover { box-shadow: 0 12px 30px rgba(255,153,51,0.45); }
+        .price-badge { 
+            position: absolute; top: -1px; right: 26px; 
+            background: var(--ruby); color: #fff; 
+            font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; 
+            padding: 5px 12px; text-transform: uppercase; 
+            box-shadow: 0 0 20px rgba(196,30,58,0.6);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+        @keyframes pulse-badge { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* TRUST BADGE */
+        .trust-badge {
+            text-align: center; margin: 40px auto 0; max-width: 500px;
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px;
+            color: rgba(200,207,224,0.55); text-transform: uppercase;
+            padding: 12px 20px; background: rgba(255,153,51,0.06); border-radius: 8px;
+            border: 1px dashed rgba(255,153,51,0.25);
+        }
+        .trust-badge strong { color: var(--gold); }
+
+        /* TESTIMONIALS */
+        #testimonials { padding: 120px 60px; max-width: 1200px; margin: 0 auto; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 60px; }
+        .testimonial-card { 
+            background: var(--glass); border: 1px solid var(--glass-border); 
+            padding: 34px; transition: all 0.4s; position: relative; overflow: hidden;
+        }
+        .testimonial-card::before {
+            content: '🪷'; position: absolute; top: -20px; right: -20px; font-size: 80px;
+            color: rgba(255,153,51,0.04); pointer-events: none;
+        }
+        .testimonial-card:hover { border-color: rgba(255,153,51,0.3); transform: translateY(-4px); }
+        .testimonial-quote { font-size: 56px; line-height: 1; color: rgba(255,153,51,0.25); font-family: 'Cinzel', serif; margin-bottom: -8px; }
+        .testimonial-text { font-size: 17px; font-style: italic; color: var(--silver); line-height: 1.7; margin-bottom: 22px; }
+        .testimonial-author { display: flex; align-items: center; gap: 13px; }
+        .author-avatar { 
+            width: 42px; height: 42px; border-radius: 50%; 
+            background: linear-gradient(135deg, rgba(255,153,51,0.2), rgba(196,30,58,0.15)); 
+            border: 1px solid rgba(255,153,51,0.4); 
+            display: flex; align-items: center; justify-content: center; font-size: 17px;
+        }
+        .author-name { font-family: 'Cinzel', serif; font-size: 13px; color: #fff; margin-bottom: 2px; }
+        .author-info { font-size: 11px; color: var(--mist); font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+        .stars-row { display: flex; gap: 3px; margin-bottom: 14px; }
+        .stars-row span { color: var(--gold); font-size: 12px; text-shadow: 0 0 5px rgba(232,167,53,0.5); }
+
+        /* CTA - PRO: RUBY + WHATSAPP */
+        #cta { 
+            padding: 160px 60px; text-align: center; position: relative; overflow: hidden;
+            background: var(--blessing);
+        }
+        #cta::before { 
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); 
+            width: 600px; height: 600px; 
+            background: radial-gradient(circle, rgba(255,153,51,0.12) 0%, transparent 70%); 
+            pointer-events: none; animation: pulse-cta-bg 4s ease-in-out infinite;
+        }
+        @keyframes pulse-cta-bg { 0%,100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.8; transform: translate(-50%,-50%) scale(1.05); } }
+        
+        .cta-title { 
+            font-family: 'Cinzel', serif; font-size: clamp(34px, 6vw, 70px); 
+            font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 22px;
+            text-shadow: 0 0 30px rgba(255,153,51,0.2);
+        }
+        .cta-title em { color: var(--gold); font-style: italic; }
+        .cta-sub { 
+            font-size: 21px; font-style: italic; color: var(--mist); 
+            max-width: 500px; margin: 0 auto 48px; line-height: 1.6; 
+        }
+        .cta-note { 
+            margin-top: 24px; font-family: 'Space Mono', monospace; font-size: 9px; 
+            letter-spacing: 2px; color: rgba(200,207,224,0.4); text-transform: uppercase; 
+        }
+        .cta-note span { color: var(--gold); }
+
+        /* WHATSAPP SHARE BUTTON */
+        .whatsapp-share {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #25D366; color: #fff; font-family: 'Space Mono', monospace;
+            font-size: 10px; letter-spacing: 1px; padding: 10px 20px; border-radius: 30px;
+            text-decoration: none; margin-top: 16px; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+        }
+        .whatsapp-share:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.5); }
+        .whatsapp-share::before { content: '📱'; font-size: 12px; }
+
+        /* FOOTER */
+        footer { 
+            padding: 56px 60px; border-top: 1px solid var(--glass-border); 
+            display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; 
+            max-width: 1400px; margin: 0 auto;
+        }
+        .footer-brand { font-family: 'Cinzel', serif; font-size: 17px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
+        .footer-copy { font-size: 13px; font-style: italic; color: var(--mist); }
+        .footer-links { display: flex; gap: 28px; list-style: none; flex-wrap: wrap; }
+        .footer-links a { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--mist); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* REVEAL */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            nav { padding: 18px 28px; }
+            .nav-links { display: none; }
+            #features, #pricing, #testimonials, #stats, #cta { padding: 80px 28px; }
+            #preview { grid-template-columns: 1fr; padding: 80px 28px; }
+            .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
+            footer { grid-template-columns: 1fr; padding: 40px 28px; }
+            .app-mockup { order: -1; }
+            .float-badge { display: none; }
+            .ancient-ai-block { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 600px) {
+            .hero-actions { flex-direction: column; align-items: center; }
+            .hero-title { font-size: clamp(42px, 12vw, 72px); }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .section-header { margin-bottom: 60px; }
+            .feature-card { padding: 36px 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <canvas id="cosmos-canvas"></canvas>
+
+    <nav>
+        <a href="#" class="nav-logo">JYOTISH AI</a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#preview">App</a></li>
+            <li><a href="#pricing">Plans</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+        </ul>
+        <div style="display:flex;gap:12px;align-items:center;">
+            <button class="lang-toggle" onclick="toggleLanguage()">EN | हिं</button>
+            <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">🙏 Free Kundli</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <svg class="mandala" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <g class="mandala-outer">
+                <circle cx="250" cy="250" r="240"/><circle cx="250" cy="250" r="220"/>
+                <polygon points="250,10 490,380 10,380"/><polygon points="250,490 490,120 10,120"/>
+                <line x1="10" y1="250" x2="490" y2="250"/><line x1="250" y1="10" x2="250" y2="490"/>
+                <line x1="75" y1="75" x2="425" y2="425"/><line x1="425" y1="75" x2="75" y2="425"/>
+            </g>
+            <g class="mandala-mid">
+                <circle cx="250" cy="250" r="160"/>
+                <polygon points="250,90 410,340 90,340"/><polygon points="250,410 410,160 90,160"/>
+            </g>
+            <g class="mandala-inner">
+                <circle cx="250" cy="250" r="80"/><circle cx="250" cy="250" r="40"/>
+                <polygon points="250,170 330,310 170,310"/><polygon points="250,330 330,190 170,190"/>
+            </g>
+        </svg>
+        <div class="mandala-om">🕉️</div>
+        <div>
+            <div class="hero-badge">Karma • Dharma • Destiny</div>
+            <h1 class="hero-title">
+                Your Stars<br>
+                <span class="accent">Are Speaking</span>
+            </h1>
+            <p class="hero-sub">First Telegram app with authentic AI Jyotish. <span class="highlight">Birth chart</span>, <span class="highlight">compatibility</span>, <span class="highlight">wealth yogas</span> & personalized <span class="highlight">upayas</span> — straight in your messenger.</p>
+            <div class="hero-actions">
+                <!-- === PRO: RUBY CTA WITH WHATSAPP === -->
+                <a href="#" class="btn-primary">✨ Get My Destiny on WhatsApp & Telegram</a>
+                <a href="#features" class="btn-secondary">Explore →</a>
+            </div>
+            <!-- === PRO: FAMILY FIRST BADGE === -->
+            <div class="family-badge">Trusted by families to find the perfect Muhurta and Matchmaking</div>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll for Blessings</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- PANCHANG TICKER -->
+    <div class="panchang-strip">
+        <div class="panchang-ticker">
+            <span class="ticker-item">🌙 Shukla Paksha</span>
+            <span class="ticker-item highlight">Rohini Nakshatra</span>
+            <span class="ticker-item">Tithi: Saptami</span>
+            <span class="ticker-item highlight">Abhijit Muhurta 11:54–12:42</span>
+            <span class="ticker-item">✦ Auspicious</span>
+            <span class="ticker-item">Moon: Vrishabha</span>
+            <span class="ticker-item">🌙 Shukla Paksha</span>
+            <span class="ticker-item highlight">Rohini Nakshatra</span>
+            <span class="ticker-item">Tithi: Saptami</span>
+            <span class="ticker-item highlight">Abhijit Muhurta 11:54–12:42</span>
+            <span class="ticker-item">✦ Auspicious</span>
+            <span class="ticker-item">Moon: Vrishabha</span>
+        </div>
+    </div>
+
+    <!-- STATS - PRO: LAKH FORMAT -->
+    <section id="stats">
+        <div class="stats-inner">
+            <div class="stat-item reveal">
+                <!-- === PRO: LAKH NOTATION === -->
+                <div class="stat-num" data-target="5">0</div>
+                <div class="stat-label">Lakh+ Believers</div>
+                <div class="stat-note">across India</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-1">
+                <div class="stat-num" data-target="50">0</div>
+                <div class="stat-label">Lakh+ Kundlis</div>
+                <div class="stat-note">generated</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+                <div class="stat-num" data-target="4.9">0</div>
+                <div class="stat-label">⭐ Rating</div>
+                <div class="stat-note">Play Store</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+                <div class="stat-num" data-target="12">0</div>
+                <div class="stat-label">Languages</div>
+                <div class="stat-note">including Hindi</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-header reveal">
+            <span class="section-label">Features</span>
+            <h2 class="section-title">Ancient Wisdom,<br><em>Modern Intelligence</em></h2>
+            <p class="section-desc">Complete Jyotish toolkit — for those who seek answers in the stars</p>
+        </div>
+        <div class="section-divider">
+            <div class="divider-line"></div><div class="divider-icon">🕉️</div><div class="divider-line"></div>
+        </div>
+        
+        <!-- === PRO: ANCIENT + AI VISUAL BLOCK === -->
+        <div class="ancient-ai-block reveal">
+            <div class="ancient-scroll">
+                <div class="scroll-paper">
+                    <strong>Parashara Hora Shastra</strong><br>
+                    "The influence of planets on human destiny is eternal..."<br><br>
+                    <em>• Graha positions • Nakshatra wisdom • Dasha timing •</em>
+                </div>
+            </div>
+            <div class="ai-scanner">
+                <div class="scanner-beam"></div>
+                <div class="ai-chip">
+                    <div class="ai-chip-icon">🤖✨</div>
+                    <div class="ai-chip-text">AI Precision Engine<br>Swiss Ephemeris + NLP</div>
+                </div>
+            </div>
+        </div>
+        <div class="ancient-ai-label">📜 3000 years of wisdom • 🤖 Millisecond accuracy</div>
+        
+        <div class="features-grid" style="margin-top:60px;">
+            <div class="feature-card reveal">
+                <div class="feature-num">01</div>
+                <span class="feature-icon">📊</span>
+                <div class="feature-title">Birth Chart (Kundli)</div>
+                <p class="feature-desc">Complete Vedic Kundli with 12 houses, planetary positions, Rashi & Nakshatra interpretations based on Parashara system.</p>
+                <span class="feature-tag">Jyotish AI</span>
+            </div>
+            <div class="feature-card reveal reveal-delay-1">
+                <div class="feature-num">02</div>
+                <span class="feature-icon">💞</span>
+                <div class="feature-title">Ashta Koota Matching</div>
+                <p class="feature-desc">Compatibility analysis: Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakut & Nadi. Know your match score.</p>
+                <span class="feature-tag">VIP</span>
+            </div>
+            <div class="feature-card reveal reveal-delay-2">
+                <div class="feature-num">03</div>
+                <span class="feature-icon">💰</span>
+                <div class="feature-title">Wealth Yogas</div>
+                <p class="feature-desc">Discover Dhana-Yogas, Raja-Yogas & Lakshmi-Yogas. Dasha system for timing prosperity periods.</p>
+                <span class="feature-tag">VIP</span>
+            </div>
+            <div class="feature-card reveal reveal-delay-1">
+                <div class="feature-num">04</div>
+                <span class="feature-icon">🪐</span>
+                <div class="feature-title">Shani Sade Sati</div>
+                <p class="feature-desc">Track Saturn phase + personalized Upayas: gemstones, mantras, donations for harmony and relief.</p>
+                <span class="feature-tag">Remedies</span>
+            </div>
+            <div class="feature-card reveal reveal-delay-2">
+                <div class="feature-num">05</div>
+                <span class="feature-icon">📅</span>
+                <div class="feature-title">Panchang & Muhurta</div>
+                <p class="feature-desc">Daily astrological calendar with Rahu Kaal, Abhijit Muhurta & auspicious timings for decisions.</p>
+                <span class="feature-tag">Daily</span>
+            </div>
+            <div class="feature-card reveal reveal-delay-3">
+                <div class="feature-num">06</div>
+                <span class="feature-icon">🤖</span>
+                <div class="feature-title">AI Jyotish Guru</div>
+                <p class="feature-desc">Chat with AI astrologer trained on classical texts. Career, love, health, finance guidance in seconds.</p>
+                <span class="feature-tag">AI ✦</span>
+            </div>
+        </div>
+        <div class="trust-badge">
+            Based on <strong>Parashara • Jaimini • Bhrigu Samhita</strong> • Calculations via Swiss Ephemeris • 🙏 Made with love for Bharat
+        </div>
+    </section>
+
+    <!-- PREVIEW -->
+    <section id="preview">
+        <div class="preview-text">
+            <div class="section-header reveal">
+                <span class="section-label">App</span>
+                <h2 class="section-title">All-in-One<br><em>Telegram Mini App</em></h2>
+            </div>
+            <ul class="preview-list">
+                <li class="reveal reveal-delay-1">Works inside Telegram — no downloads</li>
+                <li class="reveal reveal-delay-2">Pay with Telegram Stars — fast & secure</li>
+                <li class="reveal reveal-delay-3">Share your Destiny on <strong>WhatsApp</strong> in one tap</li>
+                <li class="reveal reveal-delay-4">English, Hindi + 10 regional languages</li>
+            </ul>
+            <a href="#" class="whatsapp-share">Share with Family on WhatsApp</a>
+            <!-- === PRO: FAMILY FIRST REINFORCEMENT === -->
+            <div class="family-badge" style="margin-top:20px;">👨‍👩‍👧‍👦 Perfect for family consultations & wedding planning</div>
+        </div>
+        <div class="app-mockup reveal">
+            <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <div class="phone-logo-text">🕉️ JYOTISH AI</div>
+                        <span>🌙</span>
+                    </div>
+                    <div class="phone-card">
+                        <div class="phone-card-title">NAMASTE, ARJUN ✦</div>
+                        <div class="phone-card-content">Moon in 5th house — perfect day for creative decisions & new beginnings...</div>
+                        <div class="phone-score">
+                            <div class="phone-score-item">
+                                <div class="phone-score-val">7</div>
+                                <div class="phone-score-label">Lucky #</div>
+                            </div>
+                            <div class="phone-score-item">
+                                <div class="phone-score-val">9</div>
+                                <div class="phone-score-label">Destiny</div>
+                            </div>
+                            <div class="phone-score-item">
+                                <div class="phone-score-val" style="color: var(--emerald); font-size: 13px;">Gold</div>
+                                <div class="phone-score-label">Color</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phone-card">
+                        <div class="phone-card-title">KUNDLI CHART</div>
+                        <div class="phone-planet-row">
+                            <div class="phone-planet active">☉</div>
+                            <div class="phone-planet dim">♄</div>
+                            <div class="phone-planet active">☽</div>
+                            <div class="phone-planet dim">♃</div>
+                        </div>
+                    </div>
+                    <div class="phone-card">
+                        <div class="phone-card-title">AI GURU</div>
+                        <div class="phone-card-content" style="font-size: 11px;">Namaste! Ask me about your horoscope... <span style="color: var(--gold);">⭐50</span></div>
+                    </div>
+                    <div class="phone-nav">
+                        <span class="active-nav">🏠</span>
+                        <span>📊</span>
+                        <span>💞</span>
+                        <span>💰</span>
+                        <span>🤖</span>
+                    </div>
+                </div>
+            </div>
+            <div class="float-badge">
+                <div class="badge-value">28/36</div>
+                <span class="badge-label">Compatibility</span>
+            </div>
+            <div class="float-badge">
+                <div class="badge-value">⭐ VIP</div>
+                <span class="badge-label">500 Stars</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+        <div class="section-header reveal">
+            <span class="section-label">Plans</span>
+            <h2 class="section-title">Choose Your<br><em>Path to the Stars</em></h2>
+            <p class="section-desc">Start free, unlock your full potential when you're ready</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card reveal">
+                <div class="price-label">Free</div>
+                <div class="price-amount">0 <span>Stars</span></div>
+                <div class="price-period">Forever Free</div>
+                <ul class="price-features">
+                    <li>Daily Horoscope</li>
+                    <li>Destiny Number</li>
+                    <li>Panchang & Muhurta</li>
+                    <li>Basic Remedies</li>
+                    <li class="locked">Full Kundli Report</li>
+                    <li class="locked">Ashta Koota Matching</li>
+                    <li class="locked">Wealth Yogas Analysis</li>
+                </ul>
+                <a href="#" class="price-btn price-btn-outline">Start Free</a>
+            </div>
+            <div class="price-card featured reveal reveal-delay-1">
+                <div class="price-badge">★ Popular</div>
+                <div class="price-label">VIP Access</div>
+                <div class="price-amount">500 <span>★</span></div>
+                <div class="price-period">One-time • Telegram Stars</div>
+                <ul class="price-features">
+                    <li>Everything in Free</li>
+                    <li>Complete Kundli Report</li>
+                    <li>Ashta Koota Matching</li>
+                    <li>All Wealth Yogas</li>
+                    <li>Dasha System Timing</li>
+                    <li>Advanced Personalized Remedies</li>
+                    <li>Priority AI Guru Access</li>
+                </ul>
+                <a href="#" class="price-btn price-btn-fill">✨ Unlock VIP</a>
+            </div>
+            <div class="price-card reveal reveal-delay-2">
+                <div class="price-label">AI Questions</div>
+                <div class="price-amount">50 <span>★</span></div>
+                <div class="price-period">Per Question to AI Guru</div>
+                <ul class="price-features">
+                    <li>Career & Business</li>
+                    <li>Love & Relationships</li>
+                    <li>Health & Wellness</li>
+                    <li>Financial Forecast</li>
+                    <li>Auspicious Dates</li>
+                    <li>Detailed Remedial Solutions</li>
+                </ul>
+                <a href="#" class="price-btn price-btn-outline">🤖 Ask Guru</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+        <div class="section-header reveal">
+            <span class="section-label">Reviews</span>
+            <h2 class="section-title">What Our<br><em>Starry Travelers Say</em></h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-quote">"</div>
+                <div class="stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                <p class="testimonial-text">AI Guru predicted my career shift accurately — it happened in 2 months! Now I check Muhurta before every important meeting. 🙏</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🌟</div>
+                    <div>
+                        <div class="author-name">Arjun K.</div>
+                        <div class="author-info">Bangalore • VIP</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal reveal-delay-1">
+                <div class="testimonial-quote">"</div>
+                <div class="stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                <p class="testimonial-text">Got 29/36 compatibility score with my fiancé. My family's astrologer confirmed the same Kootas. Amazing accuracy of Vedic system!</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🌺</div>
+                    <div>
+                        <div class="author-name">Priya S.</div>
+                        <div class="author-info">Mumbai • VIP</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal reveal-delay-2">
+                <div class="testimonial-quote">"</div>
+                <div class="stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                <p class="testimonial-text">Finally understood my Dasha period. Rahu Mahadasha explanation made sense of everything happening last few years. Dhanyavaad! 🕉️</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🔮</div>
+                    <div>
+                        <div class="author-name">Vikram R.</div>
+                        <div class="author-info">Delhi • VIP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA - PRO: RUBY + WHATSAPP -->
+    <section id="cta">
+        <div class="reveal">
+            <h2 class="cta-title">Your Destiny Is Written<br><em>In the Stars</em></h2>
+            <p class="cta-sub">Open the app now — get your first Kundli & daily horoscope absolutely free. <span style="color:var(--gold)">No credit card needed.</span></p>
+            <!-- === PRO: RUBY CTA WITH WHATSAPP MENTION === -->
+            <a href="#" class="btn-primary" style="font-size: 12px; padding: 20px 60px; display: inline-flex;">
+                <span>✨</span> Get My Destiny on WhatsApp & Telegram
+            </a>
+            <p class="cta-note">Available on Telegram • iOS • Android • <span>99% of India covered</span></p>
+            <!-- === PRO: FAMILY FIRST FINAL REINFORCEMENT === -->
+            <div class="family-badge" style="margin-top:24px;">👨‍👩‍👧‍👦 Share your Kundli with family for collective wisdom</div>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <div class="footer-brand">🕉️ JYOTISH AI</div>
+            <div class="footer-copy">Vedic Astrology • Powered by AI • Made with ❤️ for Bharat</div>
+        </div>
+        <ul class="footer-links">
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Support</a></li>
+            <li><a href="#">Telegram</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // LANGUAGE TOGGLE
+        let currentLang = 'en';
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            const messages = {
+                en: 'Hindi version coming soon! 🙏',
+                hi: 'हिंदी संस्करण जल्द ही उपलब्ध होगा! 🙏'
+            };
+            alert(messages[currentLang]);
+        }
+
+        // CURSOR - DISABLED ON TOUCH
+        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouch) {
+            const cursor = document.getElementById('cursor');
+            const ring = document.getElementById('cursorRing');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            document.addEventListener('mousemove', e => {
+                mx = e.clientX; my = e.clientY;
+                cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+            });
+            (function animRing() {
+                rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+                ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+                requestAnimationFrame(animRing);
+            })();
+            document.querySelectorAll('a,button,.feature-card,.price-card,.testimonial-card').forEach(el => {
+                el.addEventListener('mouseenter', () => { 
+                    cursor.style.width = '20px'; cursor.style.height = '20px'; 
+                    ring.style.width = '60px'; ring.style.height = '60px'; 
+                });
+                el.addEventListener('mouseleave', () => { 
+                    cursor.style.width = '10px'; cursor.style.height = '10px'; 
+                    ring.style.width = '36px'; ring.style.height = '36px'; 
+                });
+            });
+        }
+
+        // CANVAS STARS
+        const canvas = document.getElementById('cosmos-canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize(); window.addEventListener('resize', resize);
+        const stars = Array.from({length: 220}, () => ({
+            x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+            r: Math.random() * 1.3, phase: Math.random() * Math.PI * 2,
+            speed: 0.002 + Math.random() * 0.004, drift: (Math.random() - 0.5) * 0.08
+        }));
+        (function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.phase += s.speed; s.x += s.drift;
+                if (s.x < 0) s.x = canvas.width; if (s.x > canvas.width) s.x = 0;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,153,51,${0.25 + Math.abs(Math.sin(s.phase)) * 0.7})`;
+                ctx.fill();
+            });
+            if (Math.random() < 0.004) {
+                const sx = Math.random() * canvas.width, sy = Math.random() * canvas.height * 0.5;
+                const g = ctx.createLinearGradient(sx, sy, sx + 120, sy + 40);
+                g.addColorStop(0, 'rgba(255,153,51,0.9)'); g.addColorStop(1, 'rgba(255,153,51,0)');
+                ctx.strokeStyle = g; ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + 120, sy + 40); ctx.stroke();
+            }
+            requestAnimationFrame(draw);
+        })();
+
+        // SCROLL REVEAL
+        const obs = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        // COUNTER ANIMATION - PRO: LAKH FORMAT FOR INDIA
+        const statObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (!e.isIntersecting) return;
+                const target = parseFloat(e.target.dataset.target);
+                const isFloat = String(target).includes('.');
+                let start;
+                (function step(ts) {
+                    if (!start) start = ts;
+                    const p = Math.min((ts - start) / 2000, 1);
+                    const ease = 1 - Math.pow(1 - p, 3);
+                    const v = ease * target;
+                    // === PRO: Format numbers in Indian style (Lakh) ===
+                    if (target >= 5 && target <= 50) {
+                        // Show as "X Lakh"
+                        e.target.textContent = isFloat ? v.toFixed(1) : Math.floor(v);
+                    } else {
+                        e.target.textContent = isFloat ? v.toFixed(1) : (v >= 1000 ? Math.floor(v).toLocaleString('en-IN') + '+' : Math.floor(v) + '+');
+                    }
+                    if (p < 1) requestAnimationFrame(step);
+                    else {
+                        if (target >= 5 && target <= 50) {
+                            e.target.textContent = target.toFixed(1).replace('.0', '');
+                        } else {
+                            e.target.textContent = isFloat ? target.toFixed(1) : (target >= 1000 ? target.toLocaleString('en-IN') + '+' : target + '+');
+                        }
+                    }
+                })(performance.now());
+                statObs.unobserve(e.target);
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.stat-num[data-target]').forEach(el => statObs.observe(el));
+
+        // CTA BUTTON - Blessing animation on click
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '🙏 Generating Your Kundli...';
+                btn.style.animation = 'none';
+                
+                setTimeout(() => {
+                    // In production: redirect to Telegram Mini App with WhatsApp deep link option
+                    window.location.href = 'https://t.me/your_bot?startapp=jyotish_free';
+                }, 1500);
+            });
+        });
+
+        // === PRO: WhatsApp Share Button Handler ===
+        document.querySelector('.whatsapp-share')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const shareText = encodeURIComponent('🕉️ Discover your destiny with Jyotish AI — Free Kundli inside Telegram! https://t.me/your_bot');
+            window.open(`https://wa.me/?text=${shareText}`, '_blank');
+        });
+    </script>
+</body>
+</html>
